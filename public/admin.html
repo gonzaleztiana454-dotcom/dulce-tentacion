@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Panel Admin</title>
+</head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<body>
+    <h1>Pedidos</h1>
+
+    <div class="mb-3">
+        <button class="btn btn-secondary" onclick="cargarPedidos()">Todos</button>
+        <button class="btn btn-warning" onclick="cargarPedidos('pendiente')">Pendientes</button>
+        <button class="btn btn-success" onclick="cargarPedidos('entregado')">Entregados</button>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col">
+            <div class="card p-3 text-center">
+                <h5>Total pedidos</h5>
+                <h3 id="totalPedidos">0</h3>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card p-3 text-center">
+                <h5>Pendientes</h5>
+                <h3 id="pendientes">0</h3>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card p-3 text-center">
+                <h5>Entregados</h5>
+                <h3 id="entregados">0</h3>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card p-3 text-center bg-success text-white">
+                <h5>Total vendido</h5>
+                <h3 id="totalVentas">$0</h3>
+            </div>
+        </div>
+    </div>
+
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Fecha Entrega</th>
+                <th>Estado</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody id="tablaPedidos"></tbody>
+    </table>
+
+   <script>
+        function cargarPedidos(estado = '') {
+            let url = '/admin-pedidos';
+            if (estado) {
+                url += '?estado=' + estado;
+            }
+
+            fetch(url)
+            .then(res => res.json())
+            .then(data => {
+                const tabla = document.getElementById('tablaPedidos');
+                tabla.innerHTML = '';
+
+                data.forEach(pedido => {
+                    tabla.innerHTML += `
+                        <tr>
+                            <td>${pedido.id}</td>
+                            <td>${pedido.nombre}</td>
+                            <td>${pedido.producto}</td>
+                            <td>${pedido.cantidad}</td>
+                            <td>${pedido.fecha_entrega}</td>
+                            <td>${pedido.estado}</td>
+                            <td>
+                                <button class="btn btn-sm btn-success" onclick="marcarEntregado(${pedido.id})">Entregado</button>
+                                <button class="btn btn-sm btn-danger" onclick="eliminarPedido(${pedido.id})">Eliminar</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            });
+        }
+
+        function marcarEntregado(id) {
+            fetch('/marcar-entregado/' + id, { method: 'POST' })
+            .then(() => cargarPedidos());
+        }
+
+        function eliminarPedido(id) {
+            fetch('/eliminar-pedido/' + id, { method: 'POST' })
+            .then(() => cargarPedidos());
+        }
+
+        cargarPedidos();
+
+
+        function cargarEstadisticas() {
+            fetch('/admin-estadisticas')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('totalPedidos').innerText = data.total || 0;
+                document.getElementById('pendientes').innerText = data.pendientes || 0;
+                document.getElementById('entregados').innerText = data.entregados || 0;
+            });
+        }
+
+        cargarEstadisticas();
+
+        function cargarVentas() {
+            fetch('/admin-ventas')
+            .then(res => res.json()
+                .then(data => {
+                    document.getElementById('totalVentas').innerText = 
+                    "$" + (data.totalVentas || 0);
+                })
+            )
+        }
+
+        cargarVentas();
+        
+    </script>
+</body>
+</html>
