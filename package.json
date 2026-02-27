@@ -1,0 +1,27 @@
+{
+  "name": "postres-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gonzaleztiana454-dotcom/dulce-tentacion.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/gonzaleztiana454-dotcom/dulce-tentacion/issues"
+  },
+  "homepage": "https://github.com/gonzaleztiana454-dotcom/dulce-tentacion#readme",
+  "dependencies": {
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "sqlite3": "^5.1.7"
+  }
+}
