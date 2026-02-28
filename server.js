@@ -356,6 +356,70 @@ app.get("/logout", (req, res) => {
     });
 });
 
+app.get("/pago", (req, res) => {
+    if (!req.session.usuario) {
+        return res.redirect("/login");
+    }
+
+    res.send(`
+        <h2>Medio de Pago</h2>
+
+        <form action="/pagar" method="POST">
+            <input type="text" name="nombre" placeholder="Nombre en la tarjeta" required><br><br>
+            <input type="text" name="numero" placeholder="Número de tarjeta" required><br><br>
+            <input type="text" name="vencimiento" placeholder="MM/AA" required><br><br>
+            <input type="text" name="cvv" placeholder="CVV" required><br><br>
+
+            <button type="submit">Confirmar Pago</button>
+        </form>
+    `);
+});
+
+app.post("/pagar", (req, res) => {
+    if (!req.session.usuario) {
+        return res.redirect("/login");
+    }
+
+    const { nombre, numero, vencimiento, cvv } = req.body;
+
+    if (!nombre || !numero || !vencimiento || !cvv) {
+        return res.send("Todos los campos son obligatorios.");
+    }
+
+    // Simulación básica: aprobar siempre
+    req.session.carrito = [];
+
+    res.send(`
+        <h2>Pago aprobado ✅</h2>
+        <p>Gracias por tu compra.</p>
+        <a href="/inicio">Volver al inicio</a>
+    `);
+});
+
+app.get("/perfil", (req, res) => {
+    if (!req.session.userId) {
+        return res.redirect("/login");
+    }
+
+    db.get("SELECT * FROM usuarios WHERE id = ?", 
+        [req.session.userId], 
+        (err, usuario) => {
+
+        if (err || !usuario) {
+            return res.send("Error al obtener usuario");
+        }
+
+        res.send(`
+            <h2>Mi Perfil</h2>
+            <p>Nombre: ${usuario.nombre}</p>
+            <p>Email: ${usuario.email}</p>
+
+            <br>
+            <a href="/logout">Cerrar sesión</a>
+        `);
+    });
+});
+
 app.listen(PORT, () => {
     console.log("Servidor corriendo en puerto " + PORT);
 });
