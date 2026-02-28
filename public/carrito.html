@@ -17,9 +17,6 @@
         <div class="card mt-4 shadow-sm">
             <div class="card-body d-flex justify-content-between align-items-center">
                 <h4 id="total" class="mb-0"></h4>
-                <button onclick="confirmarCompra()" class="btn btn-success">
-                    Confirmar compra
-                </button>
             </div>
         </div>
 
@@ -86,16 +83,6 @@
                 document.getElementById("total").innerText = "Total: $" + total;
             });
 
-        function confirmarCompra() {
-            fetch('/confirmar-compra', {
-                method: 'POST'
-            })
-            .then(res => res.json())
-            .then(data => {
-                alert(data.mensaje);
-                window.location.href = "/inicio.html";
-            });
-        }
 
         function eliminarProducto(idProducto) {
             fetch('/eliminar-del-carrito', {
