@@ -357,7 +357,7 @@ app.get("/logout", (req, res) => {
 });
 
 app.get("/pago", (req, res) => {
-    if (!req.session.usuario) {
+    if (!req.session.userId) {
         return res.redirect("/login");
     }
 
@@ -376,7 +376,7 @@ app.get("/pago", (req, res) => {
 });
 
 app.post("/pagar", (req, res) => {
-    if (!req.session.usuario) {
+    if (!req.session.userId) {
         return res.redirect("/login");
     }
 
