@@ -398,27 +398,32 @@ app.post("/pagar", (req, res) => {
 
 app.get("/perfil", (req, res) => {
     if (!req.session.userId) {
-        return res.redirect("/login");
+        return res.redirect("/login.html");
     }
 
-    db.get("SELECT * FROM usuarios WHERE id = ?", 
-        [req.session.userId], 
+    res.sendFile(__dirname + "/public/perfil.html");
+});
+
+app.get("/api/perfil", (req, res) => {
+    if (!req.session.userId) {
+        return res.status(401).json({ error: "No autorizado" });
+    }
+
+    db.get(
+        "SELECT nombre, email FROM usuarios WHERE id = ?",
+        [req.session.userId],
         (err, usuario) => {
 
-        if (err || !usuario) {
-            return res.send("Error al obtener usuario");
+            if (err || !usuario) {
+                return res.status(500).json({ error: "Error al obtener usuario" });
+            }
+
+            res.json(usuario);
         }
-
-        res.send(`
-            <h2>Mi Perfil</h2>
-            <p>Nombre: ${usuario.nombre}</p>
-            <p>Email: ${usuario.email}</p>
-
-            <br>
-            <a href="/logout">Cerrar sesión</a>
-        `);
-    });
+    );
 });
+
+
 
 app.listen(PORT, () => {
     console.log("Servidor corriendo en puerto " + PORT);
