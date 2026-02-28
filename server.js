@@ -344,6 +344,18 @@ app.post('/eliminar-del-carrito', (req, res) => {
     res.json({ mensaje: "Producto eliminado" });
 });
 
+app.get("/logout", (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.log("Error al cerrar sesión:", err);
+            return res.redirect("/");
+        }
+
+        res.clearCookie("connect.sid"); // elimina la cookie
+        res.redirect("/login"); // redirige al login
+    });
+});
+
 app.listen(PORT, () => {
     console.log("Servidor corriendo en puerto " + PORT);
 });
