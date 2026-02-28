@@ -358,21 +358,10 @@ app.get("/logout", (req, res) => {
 
 app.get("/pago", (req, res) => {
     if (!req.session.userId) {
-        return res.redirect("/login");
+        return res.redirect("/login.html");
     }
 
-    res.send(`
-        <h2>Medio de Pago</h2>
-
-        <form action="/pagar" method="POST">
-            <input type="text" name="nombre" placeholder="Nombre en la tarjeta" required><br><br>
-            <input type="text" name="numero" placeholder="Número de tarjeta" required><br><br>
-            <input type="text" name="vencimiento" placeholder="MM/AA" required><br><br>
-            <input type="text" name="cvv" placeholder="CVV" required><br><br>
-
-            <button type="submit">Confirmar Pago</button>
-        </form>
-    `);
+    res.sendFile(__dirname + "/public/pago.html");
 });
 
 app.post("/pagar", (req, res) => {
@@ -389,11 +378,7 @@ app.post("/pagar", (req, res) => {
     // Simulación básica: aprobar siempre
     req.session.carrito = [];
 
-    res.send(`
-        <h2>Pago aprobado ✅</h2>
-        <p>Gracias por tu compra.</p>
-        <a href="/inicio">Volver al inicio</a>
-    `);
+    res.redirect("/compra-exitosa.html");
 });
 
 app.get("/perfil", (req, res) => {
