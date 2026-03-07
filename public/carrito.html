@@ -135,9 +135,18 @@
                                         Cantidad: ${item.cantidad} <br>
                                         Subtotal: <strong>$${subtotal}</strong>
                                     </p>
-                                    <button class="btn btn-eliminar btn-sm w-100">
-                                        Eliminar
-                                    </button>
+                                   <div class="d-flex justify-content-center align-items-center gap-2 mt-3">
+                                        <button class="btn btn-eliminar btn-sm">
+                                             −
+                                        </button>
+
+                                        <span class="fw-bold">${item.cantidad}</span>
+
+                                        <button class="btn btn-pastel btn-sm">
+                                         +
+                                        </button>
+
+                                    </div>
                                 </div>
                             </div>
                         `;
