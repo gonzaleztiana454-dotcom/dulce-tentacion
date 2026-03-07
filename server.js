@@ -408,6 +408,41 @@ app.get("/api/perfil", (req, res) => {
     );
 });
 
+app.post('/actualizar-carrito', (req, res) => {
+
+    const { producto_id, cambio } = req.body;
+    const usuario_id = req.session.usuario_id;
+
+    db.get(
+        "SELECT cantidad FROM carrito WHERE usuario_id = ? AND producto_id = ?",
+        [usuario_id, producto_id],
+        (err, row) => {
+
+            if (!row) return res.json({ ok: false });
+
+            const nuevaCantidad = row.cantidad + cambio;
+
+            if (nuevaCantidad <= 0) {
+
+                db.run(
+                    "DELETE FROM carrito WHERE usuario_id = ? AND producto_id = ?",
+                    [usuario_id, producto_id]
+                );
+
+            } else {
+
+                db.run(
+                    "UPDATE carrito SET cantidad = ? WHERE usuario_id = ? AND producto_id = ?",
+                    [nuevaCantidad, usuario_id, producto_id]
+                );
+
+            }
+
+            res.json({ ok: true });
+        }
+    );
+});
+
 
 
 app.listen(PORT, () => {

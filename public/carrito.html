@@ -151,6 +151,17 @@
                             </div>
                         `;
 
+                        const botonMenos = col.querySelector(".btn-menos");
+                        const botonMas = col.querySelector(".btn-mas");
+
+                        botonMas.addEventListener("click", () => {
+                            cambiarCantidad(item.producto_id, 1);
+                        });
+
+                        botonMenos.addEventListener("click", () => {
+                            cambiarCantidad(item.producto_id, -1);
+                        });
+
                         const boton = col.querySelector("button");
                         boton.addEventListener("click", () => {
                             eliminarProducto(item.producto_id);
@@ -162,6 +173,21 @@
 
                 document.getElementById("total").innerText = "Total: $" + total;
             });
+
+        function cambiarCantidad(idProducto, cambio) {
+            fetch('/actualizar-carrito', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        producto_id: idProducto,
+                        cambio: cambio
+                    })
+                })
+                .then(res => res.json())
+                .then(() => {
+                    location.reload();
+                });
+            }
 
 
         function eliminarProducto(idProducto) {
