@@ -197,7 +197,6 @@ app.post('/login', (req, res) => {
             if (user) {
                 req.session.userId = user.id;
                 req.session.nombre = user.nombre;
-                req.session.rol = user.rol; 
 
                 res.redirect('/inicio');
             
@@ -308,37 +307,29 @@ app.get('/api/carrito', (req, res) => {
 app.post('/actualizar-carrito', (req, res) => {
 
     const { producto_id, cambio } = req.body;
-    const usuario_id = req.session.usuario_id;
 
-    db.get(
-        "SELECT cantidad FROM pedidos WHERE usuario_id = ? AND producto_id = ?",
-        [usuario_id, producto_id],
-        (err, row) => {
+    if (!req.session.carrito) {
+        req.session.carrito = [];
+    }
 
-            if (!row) return res.json({ ok: false });
-
-            const nuevaCantidad = row.cantidad + cambio;
-
-            if (nuevaCantidad <= 0) {
-
-                db.run(
-                    "DELETE FROM pedidos WHERE usuario_id = ? AND producto_id = ?",
-                    [usuario_id, producto_id]
-                );
-
-            } else {
-
-                db.run(
-                    "UPDATE pedidos SET cantidad = ? WHERE usuario_id = ? AND producto_id = ?",
-                    [nuevaCantidad, usuario_id, producto_id]
-                );
-
-            }
-
-            res.json({ ok: true });
-
-        }
+    const item = req.session.carrito.find(
+        p => p.producto_id == producto_id
     );
+
+    if (item) {
+
+        item.cantidad += Number(cambio);
+
+        if (item.cantidad <= 0) {
+            req.session.carrito = req.session.carrito.filter(
+                p => p.producto_id != producto_id
+            );
+        }
+
+    }
+
+    res.json({ ok: true });
+
 });
 
 app.post('/confirmar-compra', (req, res) => {
