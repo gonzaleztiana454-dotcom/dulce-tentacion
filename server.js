@@ -57,6 +57,8 @@ const db = new sqlite3.Database('./database.db', (err) => {
     } else {
         console.log("Base de datos conectada");
 
+        db.run("ALTER TABLE productos ADD COLUMN descripcion TEXT", (err) => {});
+
         db.serialize(() => {
 
             db.run(`
