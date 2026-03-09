@@ -72,7 +72,8 @@ const db = new sqlite3.Database('./database.db', (err) => {
                 CREATE TABLE IF NOT EXISTS productos (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     nombre TEXT,
-                    precio REAL
+                    precio REAL,
+                    descripcion TEXT
                 )
             `);
 
@@ -89,10 +90,9 @@ const db = new sqlite3.Database('./database.db', (err) => {
                 )
             `);
 
-            db.run("INSERT OR IGNORE INTO productos (id, nombre, precio) VALUES (1, 'Torta Chocolinas', 4500)");
-            db.run("INSERT OR IGNORE INTO productos (id, nombre, precio) VALUES (2, 'Cheesecake', 5200)");
-            db.run("INSERT OR IGNORE INTO productos (id, nombre, precio) VALUES (3, 'Brownies', 3000)");
-
+           db.run("INSERT OR IGNORE INTO productos (id, nombre, precio, descripcion) VALUES (1, 'Torta Chocolinas', 4500, 'Torta de 20cm, 1.2kg aprox, rinde 8 personas')");
+           db.run("INSERT OR IGNORE INTO productos (id, nombre, precio, descripcion) VALUES (2, 'Cheesecake', 5200, 'Cheesecake de 22cm, 1.4kg aprox, rinde 10 personas')");
+           db.run("INSERT OR IGNORE INTO productos (id, nombre, precio, descripcion) VALUES (3, 'Brownies', 3000, 'Caja de 12 brownies, 900g aprox, rinde 6 personas')");
         });
     }
 });
