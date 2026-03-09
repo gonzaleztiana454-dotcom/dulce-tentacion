@@ -305,6 +305,42 @@ app.get('/api/carrito', (req, res) => {
     res.json(req.session.carrito || []);
 });
 
+app.post('/actualizar-carrito', (req, res) => {
+
+    const { producto_id, cambio } = req.body;
+    const usuario_id = req.session.usuario_id;
+
+    db.get(
+        "SELECT cantidad FROM carrito WHERE usuario_id = ? AND producto_id = ?",
+        [usuario_id, producto_id],
+        (err, row) => {
+
+            if (!row) return res.json({ ok: false });
+
+            const nuevaCantidad = row.cantidad + cambio;
+
+            if (nuevaCantidad <= 0) {
+
+                db.run(
+                    "DELETE FROM carrito WHERE usuario_id = ? AND producto_id = ?",
+                    [usuario_id, producto_id]
+                );
+
+            } else {
+
+                db.run(
+                    "UPDATE carrito SET cantidad = ? WHERE usuario_id = ? AND producto_id = ?",
+                    [nuevaCantidad, usuario_id, producto_id]
+                );
+
+            }
+
+            res.json({ ok: true });
+
+        }
+    );
+});
+
 app.post('/confirmar-compra', (req, res) => {
 
     const carrito = req.session.carrito;
@@ -329,20 +365,6 @@ app.post('/confirmar-compra', (req, res) => {
     res.json({ mensaje: "Compra realizada con éxito" });
 });
 
-app.post('/eliminar-del-carrito', (req, res) => {
-
-    const { producto_id } = req.body;
-
-    if (!req.session.carrito) {
-        return res.json({ mensaje: "Carrito vacío" });
-    }
-
-    req.session.carrito = req.session.carrito.filter(
-        item => item.producto_id != producto_id
-    );
-
-    res.json({ mensaje: "Producto eliminado" });
-});
 
 app.get("/logout", (req, res) => {
     req.session.destroy((err) => {
@@ -404,41 +426,6 @@ app.get("/api/perfil", (req, res) => {
             }
 
             res.json(usuario);
-        }
-    );
-});
-
-app.post('/actualizar-carrito', (req, res) => {
-
-    const { producto_id, cambio } = req.body;
-    const usuario_id = req.session.usuario_id;
-
-    db.get(
-        "SELECT cantidad FROM carrito WHERE usuario_id = ? AND producto_id = ?",
-        [usuario_id, producto_id],
-        (err, row) => {
-
-            if (!row) return res.json({ ok: false });
-
-            const nuevaCantidad = row.cantidad + cambio;
-
-            if (nuevaCantidad <= 0) {
-
-                db.run(
-                    "DELETE FROM carrito WHERE usuario_id = ? AND producto_id = ?",
-                    [usuario_id, producto_id]
-                );
-
-            } else {
-
-                db.run(
-                    "UPDATE carrito SET cantidad = ? WHERE usuario_id = ? AND producto_id = ?",
-                    [nuevaCantidad, usuario_id, producto_id]
-                );
-
-            }
-
-            res.json({ ok: true });
         }
     );
 });

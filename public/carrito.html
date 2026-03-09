@@ -128,31 +128,35 @@
 
                         col.innerHTML = `
                             <div class="card shadow-sm h-100">
-                                <div class="card-body">
+                                <div class="card-body text-center">
+
                                     <h5 class="card-title">${producto.nombre}</h5>
+
                                     <p class="precio-box">
                                         Precio: $${producto.precio} <br>
-                                        Cantidad: ${item.cantidad} <br>
                                         Subtotal: <strong>$${subtotal}</strong>
                                     </p>
-                                   <div class="d-flex justify-content-center align-items-center gap-2 mt-3">
-                                        <button class="btn btn-eliminar btn-sm">
-                                             −
+
+                                    <div class="d-flex justify-content-center align-items-center gap-3 mt-3">
+
+                                        <button class="btn btn-eliminar btn-sm btn-menos">
+                                            −
                                         </button>
 
                                         <span class="fw-bold">${item.cantidad}</span>
 
-                                        <button class="btn btn-pastel btn-sm">
-                                         +
+                                        <button class="btn btn-pagar btn-sm btn-mas">
+                                            +
                                         </button>
 
                                     </div>
+
                                 </div>
                             </div>
                         `;
 
-                        const botonMenos = col.querySelector(".btn-menos");
                         const botonMas = col.querySelector(".btn-mas");
+                        const botonMenos = col.querySelector(".btn-menos");
 
                         botonMas.addEventListener("click", () => {
                             cambiarCantidad(item.producto_id, 1);
@@ -162,11 +166,6 @@
                             cambiarCantidad(item.producto_id, -1);
                         });
 
-                        const boton = col.querySelector("button");
-                        boton.addEventListener("click", () => {
-                            eliminarProducto(item.producto_id);
-                        });
-
                         contenedor.appendChild(col);
                     }
                 });
@@ -174,32 +173,22 @@
                 document.getElementById("total").innerText = "Total: $" + total;
             });
 
+
         function cambiarCantidad(idProducto, cambio) {
             fetch('/actualizar-carrito', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        producto_id: idProducto,
-                        cambio: cambio
-                    })
+                body: JSON.stringify({
+                    producto_id: idProducto,
+                    cambio: cambio
                 })
-                .then(res => res.json())
-                .then(() => {
-                    location.reload();
-                });
-            }
-
-
-        function eliminarProducto(idProducto) {
-            fetch('/eliminar-del-carrito', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ producto_id: idProducto })
             })
+    
             .then(res => res.json())
-            .then(data => {
+            .then(() => {
                 location.reload();
             });
+
         }
     </script>
 
