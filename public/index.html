@@ -6,12 +6,19 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-         body {
-            background: linear-gradient(135deg, #FFF5F8, #FCE4EC);
-            height: 100vh;
+        body{
+            background-image: url('/imagenes/fondo-postres.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .overlay{
+            background: rgba(255,255,255,0.85);
+            min-height: 100vh;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
         }
 
         .card-registro {
@@ -56,35 +63,38 @@
 
 <body>
 
-    <div class="card-registro text-center">
+    <div class="overlay">
 
-        <h2 class="titulo mb-4">🍓 Crear Cuenta</h2>
-        <p class="text-muted mb-4">Unite a Dulce Tentación</p>
+        <div class="card-registro text-center">
 
-        <form action="/registro" method="POST">
+            <h2 class="titulo mb-4">🍓 Crear Cuenta</h2>
+            <p class="text-muted mb-4">Unite a Dulce Tentación</p>
 
-            <div class="mb-3 text-start">
-                <label class="form-label">Nombre</label>
-                <input type="text" name="nombre" class="form-control" required>
-            </div>
-        
-            <div class="mb-3 text-start">
-                <label class="form-label">Email</label>
-                <input type="email" name="email" class="form-control" required>
-            </div>
+            <form action="/registro" method="POST">
 
-            <div class="mb-4 text-start">
-                <label class="form-label">Contraseña</label>
-                <input type="password" name="password" class="form-control" required>
-            </div>
+                <div class="mb-3 text-start">
+                    <label class="form-label">Nombre</label>
+                    <input type="text" name="nombre" class="form-control" required>
+                </div>
+            
+                <div class="mb-3 text-start">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" required>
+                </div>
 
-            <button type="submit" class="btn btn-pastel w-100 mb-3">
-                Registrarme
-            </button>
-        </form>
+                <div class="mb-4 text-start">
+                    <label class="form-label">Contraseña</label>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
 
-        <p>¿Ya tenés cuenta?</p>
-        <a href="login.html">Iniciar sesión</a>
+                <button type="submit" class="btn btn-pastel w-100 mb-3">
+                    Registrarme
+                </button>
+            </form>
+
+            <p>¿Ya tenés cuenta?</p>
+            <a href="login.html">Iniciar sesión</a>
+        </div>    
     </div>
     
 </body>
