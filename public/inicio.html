@@ -76,6 +76,11 @@
             color: #880e4f;
         }
 
+        .descripcion-producto{
+            font-size: 14px;
+            color: #7a5a66;
+        }
+
     </style>
 
 </head>
@@ -146,6 +151,9 @@
                             style="height:200px; object-fit:cover;">
                         <div class="card-body text-center">
                             <h5 class="card-title">${prod.nombre}</h5>
+                            <p class="descripcion-producto">
+                                ${prod.descripcion}
+                            </p>
                             <p class="card-text">Precio: <strong>$${prod.precio || 0}</strong></p>
                             <button class="btn btn-pastel w-100">
                                 Agregar al carrito
