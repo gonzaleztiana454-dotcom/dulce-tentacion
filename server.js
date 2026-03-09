@@ -311,7 +311,7 @@ app.post('/actualizar-carrito', (req, res) => {
     const usuario_id = req.session.usuario_id;
 
     db.get(
-        "SELECT cantidad FROM carrito WHERE usuario_id = ? AND producto_id = ?",
+        "SELECT cantidad FROM pedidos WHERE usuario_id = ? AND producto_id = ?",
         [usuario_id, producto_id],
         (err, row) => {
 
@@ -322,14 +322,14 @@ app.post('/actualizar-carrito', (req, res) => {
             if (nuevaCantidad <= 0) {
 
                 db.run(
-                    "DELETE FROM carrito WHERE usuario_id = ? AND producto_id = ?",
+                    "DELETE FROM pedidos WHERE usuario_id = ? AND producto_id = ?",
                     [usuario_id, producto_id]
                 );
 
             } else {
 
                 db.run(
-                    "UPDATE carrito SET cantidad = ? WHERE usuario_id = ? AND producto_id = ?",
+                    "UPDATE pedidos SET cantidad = ? WHERE usuario_id = ? AND producto_id = ?",
                     [nuevaCantidad, usuario_id, producto_id]
                 );
 
