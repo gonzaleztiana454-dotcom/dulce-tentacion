@@ -175,6 +175,9 @@
 
 
         function cambiarCantidad(idProducto, cambio) {
+            
+            console.log("Cambio:", cambio, "Producto:", idProducto);
+
             fetch('/actualizar-carrito', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
