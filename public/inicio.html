@@ -152,7 +152,7 @@
                         <div class="card-body text-center">
                             <h5 class="card-title">${prod.nombre}</h5>
                             <p class="descripcion-producto">
-                                ${prod.descripcion}
+                                ${prod.descripcion || ""}
                             </p>
                             <p class="card-text">Precio: <strong>$${prod.precio || 0}</strong></p>
                             <button class="btn btn-pastel w-100">

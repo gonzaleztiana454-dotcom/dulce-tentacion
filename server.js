@@ -95,6 +95,11 @@ const db = new sqlite3.Database('./database.db', (err) => {
            db.run("INSERT OR IGNORE INTO productos (id, nombre, precio, descripcion) VALUES (1, 'Torta Chocolinas', 4500, 'Torta de 20cm, 1.2kg aprox, rinde 8 personas')");
            db.run("INSERT OR IGNORE INTO productos (id, nombre, precio, descripcion) VALUES (2, 'Cheesecake', 5200, 'Cheesecake de 22cm, 1.4kg aprox, rinde 10 personas')");
            db.run("INSERT OR IGNORE INTO productos (id, nombre, precio, descripcion) VALUES (3, 'Brownies', 3000, 'Caja de 12 brownies, 900g aprox, rinde 6 personas')");
+           
+           db.run("UPDATE productos SET descripcion='Torta de 20cm, 1.2kg aprox, rinde 8 personas' WHERE id=1");
+           db.run("UPDATE productos SET descripcion='Cheesecake de 22cm, 1.4kg aprox, rinde 10 personas' WHERE id=2");
+           db.run("UPDATE productos SET descripcion='Caja de 12 brownies, 900g aprox, rinde 6 personas' WHERE id=3");
+    
         });
     }
 });
